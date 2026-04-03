@@ -1,4 +1,4 @@
-﻿namespace EcoStepBackend.Validators;
+namespace EcoStepBackend.Validators;
 
 public interface ISurveyDataValidator<in T>
 {

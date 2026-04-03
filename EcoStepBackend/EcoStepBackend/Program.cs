@@ -1,9 +1,8 @@
 using System.Text;
 using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -56,7 +55,7 @@ internal static class Program
     private static void BuildServices()
     {
         _builder.Services.AddDbContext<AppDbContext>();
-        
+
         // TODO: Убрать AllowAnyOrigin
         _builder.Services.AddCors(options =>
         {
@@ -126,7 +125,7 @@ internal static class Program
         app.UseCors();
 
         RunFrontend(app);
-        
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

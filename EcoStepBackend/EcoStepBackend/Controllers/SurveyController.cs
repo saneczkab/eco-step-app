@@ -1,4 +1,4 @@
-﻿﻿using EcoStepBackend.Validators;
+using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,14 +28,14 @@ public class SurveyController(
             .Include(u => u.Surveys)
             .ThenInclude(s => s.WasteData)
             .FirstOrDefault(u => u.Id == userId);
-        
+
         if (user is null)
             return NotFound();
 
         logger.LogInformation("Method: GetAllSurveys | UserId: {UserId} | Time: {Time}", userId, DateTime.UtcNow);
         return Ok(user.Surveys);
     }
-    
+
     [HttpGet("{userId:long}/last-week-surveys")]
     public IActionResult GetLastWeekSurveys(long userId)
     {
@@ -49,14 +49,14 @@ public class SurveyController(
             .Include(u => u.Surveys)
             .ThenInclude(s => s.WasteData)
             .FirstOrDefault(u => u.Id == userId);
-        
+
         if (user is null)
             return NotFound();
 
         var lastSurvey = user.Surveys
             .OrderByDescending(s => s.CompletedAt)
             .Where(s => s.CompletedAt >= DateTime.UtcNow.AddDays(-7));
-        
+
         logger.LogInformation("Method: GetLastWeekSurveys | UserId: {UserId} | Time: {Time}", userId, DateTime.UtcNow);
         return Ok(lastSurvey);
     }
@@ -66,14 +66,14 @@ public class SurveyController(
     {
         survey.CompletedAt = DateTime.UtcNow;
         var userId = survey.UserId;
-        
+
         var user = db.Users
             .Include(u => u.Surveys)
             .FirstOrDefault(u => u.Id == userId);
-        
+
         if (user is null)
             return NotFound();
-        
+
         ValidateSurvey(user, survey);
         user.Surveys.Add(survey);
         db.SaveChanges();

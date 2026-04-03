@@ -1,4 +1,4 @@
-﻿namespace EcoStepBackend;
+namespace EcoStepBackend;
 
 public enum HouseType
 {

@@ -1,4 +1,4 @@
-﻿﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +30,7 @@ public class AuthController(AppDbContext db, IConfiguration config, ILogger<Surv
 
         db.Users.Add(user);
         await db.SaveChangesAsync();
-        
+
         return Ok(new { UserId = user.Id });
     }
 
@@ -48,7 +48,7 @@ public class AuthController(AppDbContext db, IConfiguration config, ILogger<Surv
         var token = GenerateJwtToken(user);
         return Ok(new { Token = token, UserId = user.Id });
     }
-    
+
     [Authorize]
     [HttpGet("profile/{id:long}")]
     public async Task<IActionResult> Profile(long id)
