@@ -1,0 +1,25 @@
+﻿services:
+  eco-step-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: eco-step-app:latest
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    environment:
+      DB_PATH: ${DB_PATH:-/data/main.db}
+    volumes:
+      - eco-step-db:/data
+
+  migrator:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    working_dir: /src
+    environment:
+      DB_PATH: ${DB_PATH:-/data/main.db}
+    volumes:
+      - ./:/src
+      - eco-step-db:/data
+
+volumes:
+  eco-step-db:

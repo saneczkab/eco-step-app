@@ -6,3 +6,5 @@ eco-step-app.sln
 EcoStepBackend/EcoStepBackend/main.db*
 EcoStepBackend/EcoStepBackend/publish
 EcoStepBackend/EcoStepBackend/Logs
+Front/node_modules
+.env

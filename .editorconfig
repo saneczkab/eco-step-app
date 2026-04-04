@@ -1,0 +1,28 @@
+﻿root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+csharp_new_line_before_open_brace = all
+csharp_prefer_braces = true:suggestion
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_prefer_auto_properties = true:suggestion
+dotnet_style_prefer_collection_expression = true:suggestion
+dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.IDE0055.severity = warning
+
+[*.{js,css,html,json,md,yml,yaml}]
+indent_style = space
+indent_size = 2
+

@@ -8,7 +8,14 @@ public class AppDbContext : DbContext
 
     public AppDbContext()
     {
-        string currentDirectory = Directory.GetCurrentDirectory();
+        var envDbPath = Environment.GetEnvironmentVariable("DB_PATH");
+        if (!string.IsNullOrWhiteSpace(envDbPath))
+        {
+            DbPath = envDbPath;
+            return;
+        }
+
+        var currentDirectory = Directory.GetCurrentDirectory();
         var index = currentDirectory.LastIndexOf("bin");
         if (index != -1)
             currentDirectory = currentDirectory[..index];
