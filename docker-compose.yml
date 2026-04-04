@@ -13,7 +13,7 @@
       - eco-step-db:/data
 
   migrator:
-    image: mcr.microsoft.com/dotnet/sdk:10.0
+    image: mcr.microsoft.com/dotnet/sdk:9.0
     working_dir: /src
     environment:
       DB_PATH: ${DB_PATH:-/data/main.db}
