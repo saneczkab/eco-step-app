@@ -1,18 +1,16 @@
+using EcoStepBackend.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EcoStepBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(AppDbContext db, ILogger<SurveyController> logger) : ControllerBase
+public class UserController(IUserService userService, ILogger<UserController> logger) : ControllerBase
 {
     [HttpGet("{id:long}")]
-    public IActionResult GetUser(long id)
+    public async Task<IActionResult> GetUser(long id)
     {
-        var user = db.Users
-            .Include(u => u.Household)
-            .FirstOrDefault(u => u.Id == id);
+        var user = await userService.GetUserAsync(id);
 
         if (user is null)
             return NotFound();
@@ -22,27 +20,12 @@ public class UserController(AppDbContext db, ILogger<SurveyController> logger) :
     }
 
     [HttpPut("{id:long}/household")]
-    public IActionResult UpdateHousehold(long id, [FromBody] Household updated)
+    public async Task<IActionResult> UpdateHousehold(long id, [FromBody] Household updated)
     {
-        var user = db.Users
-            .Include(u => u.Household)
-            .FirstOrDefault(u => u.Id == id);
-
-        if (user is null)
+        var household = await userService.UpdateHouseholdAsync(id, updated);
+        if (household is null)
             return NotFound();
 
-        if (user.Household is null)
-        {
-            user.Household = updated;
-        }
-        else
-        {
-            updated.Id = user.Household.Id;
-            db.Entry(user.Household).CurrentValues.SetValues(updated);
-        }
-
-        db.SaveChanges();
-
-        return Ok(user.Household ?? updated);
+        return Ok(household);
     }
 }

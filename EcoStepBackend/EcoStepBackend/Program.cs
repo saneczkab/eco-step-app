@@ -1,4 +1,6 @@
 using System.Text;
+using EcoStepBackend.Crud;
+using EcoStepBackend.Services;
 using EcoStepBackend.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
@@ -47,7 +49,7 @@ internal static class Program
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["Jwt:Issuer"],
                 ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
             };
         });
     }
@@ -70,6 +72,8 @@ internal static class Program
         _builder.Services.AddControllers();
         _builder.Services.AddEndpointsApiExplorer();
         BuildSwagger();
+        BuildCrud();
+        BuildDomainServices();
         BuildValidators();
     }
 
@@ -111,6 +115,21 @@ internal static class Program
         _builder.Services.AddScoped<ISurveyDataValidator<ResourceData>, ResourceDataValidator>();
         _builder.Services.AddScoped<ISurveyDataValidator<TransportData>, TransportDataValidator>();
         _builder.Services.AddScoped<ISurveyDataValidator<WasteData>, WasteDataValidator>();
+    }
+
+    private static void BuildCrud()
+    {
+        _builder.Services.AddScoped<IAuthCrud, AuthCrud>();
+        _builder.Services.AddScoped<IUserCrud, UserCrud>();
+        _builder.Services.AddScoped<ISurveyCrud, SurveyCrud>();
+    }
+
+    private static void BuildDomainServices()
+    {
+        _builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+        _builder.Services.AddScoped<IAuthService, AuthService>();
+        _builder.Services.AddScoped<IUserService, UserService>();
+        _builder.Services.AddScoped<ISurveyService, SurveyService>();
     }
 
     private static void RunApp()
