@@ -1,5 +1,5 @@
 export class EcoStepApi {
-    constructor(baseUrl = 'http://158.160.44.27:5000/api') {
+    constructor(baseUrl = 'http://localhost:5000/api') {
         this.baseUrl = baseUrl;
         this.token = localStorage.getItem('jwt_token');
     }
